@@ -1,4 +1,5 @@
 mod ast;
+mod token;
 
 use ast::Formula;
 
