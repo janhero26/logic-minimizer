@@ -39,6 +39,18 @@ pub fn tokenize(input: &str) -> Vec<Token> {
                 tokens.push(Token::RParen);
                 chars.next();
             }
+            c if c.is_alphabetic() => {
+                let mut name = String::new();
+                while let Some(&c) = chars.peek() {
+                    if c.is_alphanumeric() {
+                        name.push(c);
+                        chars.next();
+                    } else {
+                        break;
+                    }
+                }
+                tokens.push(Token::Var(name));
+            }
             _ => {
                 chars.next();
             }
