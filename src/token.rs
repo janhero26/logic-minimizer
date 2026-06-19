@@ -39,6 +39,23 @@ pub fn tokenize(input: &str) -> Vec<Token> {
                 tokens.push(Token::RParen);
                 chars.next();
             }
+            '-' => {
+                chars.next();
+                if chars.peek() == Some(&'>') {
+                    chars.next();
+                    tokens.push(Token::Implies);
+                }
+            }
+            '<' => {
+                chars.next();
+                if chars.peek() == Some(&'-') {
+                    chars.next();
+                    if chars.peek() == Some(&'>') {
+                        chars.next();
+                        tokens.push(Token::Iff);
+                    }
+                }
+            }
             c if c.is_alphabetic() => {
                 let mut name = String::new();
                 while let Some(&c) = chars.peek() {
