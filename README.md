@@ -19,7 +19,7 @@ Actively building this out. Here's where things stand:
 
 - [x] Syntax tree for propositional formulas (`Var`, `Not`, `And`, `Or`, `Implies`, `Iff`)
 - [x] Readable formula output via the `Display` trait
-- [ ] Lexer (string to tokens)
+- [x] Lexer (string to tokens)
 - [ ] Parser (tokens to syntax tree)
 - [ ] Boolean simplification (e.g. `A ∧ (A ∨ B)` becomes `A`)
 - [ ] Conversion to CNF / DNF
