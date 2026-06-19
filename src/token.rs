@@ -76,3 +76,38 @@ pub fn tokenize(input: &str) -> Vec<Token> {
 
     tokens
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn var(name: &str) -> Token {
+        Token::Var(name.to_string())
+    }
+
+    #[test]
+    fn einfache_und_verknuepfung() {
+        assert_eq!(tokenize("A & B"), vec![var("A"), Token::And, var("B")]);
+    }
+
+    #[test]
+    fn klammern_und_oder() {
+        assert_eq!(
+            tokenize("A & (B | C)"),
+            vec![var("A"), Token::And, Token::LParen, var("B"), Token::Or, var("C"), Token::RParen]
+        );
+    }
+
+    #[test]
+    fn mehrzeichige_operatoren() {
+        assert_eq!(
+            tokenize("A -> B <-> !C"),
+            vec![var("A"), Token::Implies, var("B"), Token::Iff, Token::Not, var("C")]
+        );
+    }
+
+    #[test]
+    fn mehrbuchstabige_variable() {
+        assert_eq!(tokenize("Foo & Bar"), vec![var("Foo"), Token::And, var("Bar")]);
+    }
+}
