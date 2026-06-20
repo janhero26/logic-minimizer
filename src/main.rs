@@ -1,5 +1,6 @@
 mod ast;
 mod token;
+mod parser;
 
 use token::tokenize;
 
