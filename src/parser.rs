@@ -36,6 +36,16 @@ impl Parser {
     }
 
     pub fn parse_formula(&mut self) -> Formula {
-        self.parse_atom()
+        self.parse_not()
+    }
+
+    fn parse_not(&mut self) -> Formula {
+        if self.peek() == Some(&Token::Not) {
+            self.advance(); // ! verbrauchen
+            let operand = self.parse_not();
+            Formula::Not(Box::new(operand))
+        } else {
+            self.parse_atom()
+        }
     }
 }
