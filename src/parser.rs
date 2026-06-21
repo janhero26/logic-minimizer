@@ -36,7 +36,7 @@ impl Parser {
     }
 
     pub fn parse_formula(&mut self) -> Formula {
-        self.parse_not()
+        self.parse_and()
     }
 
     fn parse_not(&mut self) -> Formula {
@@ -47,5 +47,17 @@ impl Parser {
         } else {
             self.parse_atom()
         }
+    }
+
+    fn parse_and(&mut self) -> Formula {
+        let mut left = self.parse_not();
+
+        while self.peek() == Some(&Token::And) {
+            self.advance(); // & verbrauchen
+            let right = self.parse_not();
+            left = Formula::And(Box::new(left), Box::new(right));
+        }
+
+        left
     }
 }
