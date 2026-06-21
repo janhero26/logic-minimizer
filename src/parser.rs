@@ -22,4 +22,20 @@ impl Parser {
         }
         token
     }
+
+    fn parse_atom(&mut self) -> Formula {
+        match self.advance() {
+            Some(Token::Var(name)) => Formula::Var(name),
+            Some(Token::LParen) => {
+                let inner = self.parse_formula();
+                self.advance(); // schließende ) verbrauchen
+                inner
+            }
+            other => panic!("Unerwartetes Token: {:?}", other),
+        }
+    }
+
+    pub fn parse_formula(&mut self) -> Formula {
+        self.parse_atom()
+    }
 }

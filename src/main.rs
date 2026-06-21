@@ -3,9 +3,11 @@ mod token;
 mod parser;
 
 use token::tokenize;
+use parser::Parser;
 
 fn main() {
-    let input = "A -> B <-> !C";
-    let tokens = tokenize(input);
-    println!("{:?}", tokens);
+    let tokens = tokenize("(A)");
+    let mut parser = Parser::new(tokens);
+    let formula = parser.parse_formula();
+    println!("{}", formula);
 }
