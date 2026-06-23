@@ -36,7 +36,7 @@ impl Parser {
     }
 
     pub fn parse_formula(&mut self) -> Formula {
-        self.parse_implies()
+        self.parse_iff()
     }
 
     fn parse_not(&mut self) -> Formula {
@@ -80,6 +80,18 @@ impl Parser {
             self.advance();
             let right = self.parse_implies();
             Formula::Implies(Box::new(left), Box::new(right))
+        } else {
+            left
+        }
+    }
+
+    fn parse_iff(&mut self) -> Formula {
+        let left = self.parse_implies();
+
+        if self.peek() == Some(&Token::Iff) {
+            self.advance();
+            let right = self.parse_iff();
+            Formula::Iff(Box::new(left), Box::new(right))
         } else {
             left
         }
