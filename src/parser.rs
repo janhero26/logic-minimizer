@@ -97,3 +97,45 @@ impl Parser {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::token::tokenize;
+
+    fn parse(input: &str) -> String {
+        let tokens = tokenize(input);
+        let mut parser = Parser::new(tokens);
+        parser.parse_formula().to_string()
+    }
+
+    #[test]
+    fn einzelne_variable() {
+        assert_eq!(parse("A"), "A");
+    }
+
+    #[test]
+    fn negation() {
+        assert_eq!(parse("!!A"), "¬¬A");
+    }
+
+    #[test]
+    fn und_vor_oder() {
+        assert_eq!(parse("A | B & C"), "(A ∨ (B ∧ C))");
+    }
+
+    #[test]
+    fn implikation_rechtsassoziativ() {
+        assert_eq!(parse("A -> B -> C"), "(A → (B → C))");
+    }
+
+    #[test]
+    fn klammern_ueberschreiben_praezedenz() {
+        assert_eq!(parse("(A | B) & C"), "((A ∨ B) ∧ C)");
+    }
+
+    #[test]
+    fn alle_ebenen_kombiniert() {
+        assert_eq!(parse("A -> B <-> !C & D"), "((A → B) ↔ (¬C ∧ D))");
+    }
+}
