@@ -6,7 +6,10 @@ pub fn simplify(formula: Formula) -> Formula {
 
         Formula::Not(inner) => {
             let inner = simplify(*inner);
-            Formula::Not(Box::new(inner))
+            match inner {
+                Formula::Not(deeper) => *deeper,
+                other => Formula::Not(Box::new(other)),
+            }
         }
 
         Formula::And(left, right) => {
