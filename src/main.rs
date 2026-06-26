@@ -1,13 +1,16 @@
 mod ast;
 mod token;
 mod parser;
+mod simplify;
 
 use token::tokenize;
 use parser::Parser;
+use simplify::simplify;
 
 fn main() {
-    let tokens = tokenize("A -> B <-> !C & D");
+    let tokens = tokenize("A & (A | B)");
     let mut parser = Parser::new(tokens);
     let formula = parser.parse_formula();
-    println!("{}", formula);
+    let simplified = simplify(formula);
+    println!("{}", simplified);
 }
